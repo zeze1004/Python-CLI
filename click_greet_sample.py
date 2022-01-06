@@ -6,7 +6,7 @@ import click
 def hello(count, name):
     """Simple program that greets NAME for a total of COUNT times."""
     for _ in range(count):
-        click.echo("Hello, {name}!")
+        click.echo("Hello, %s!" %name)
 
 if __name__ == '__main__':
     hello()

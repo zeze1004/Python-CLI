@@ -78,7 +78,7 @@ resouce = {
 new_answers = []
 def change_str(answers):
     // resouce의 key 값이 replace될 단어
-    // 
+    // new_answers에 answers의 값 넣음?
         
 
 fin = open("redis.tf", "rt") ### redis랑 new_redis랑 바꾸기

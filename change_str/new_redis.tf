@@ -1,1 +1,0 @@
-cache.t2.small

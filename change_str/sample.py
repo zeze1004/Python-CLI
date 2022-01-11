@@ -1,4 +1,4 @@
-fin = open("redis.tf", "rt")
+fin = open("redis.tf", "rt") ### redis랑 new_redis랑 바꾸기
 #output file to write the result to
 fout = open("new_redis.tf", "wt")
 #for each line in the input file

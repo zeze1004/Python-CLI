@@ -2,7 +2,16 @@ from __future__ import print_function, unicode_literals
 
 from PyInquirer import style_from_dict, Token, prompt, Separator
 from pprint import pprint
+from prompt_toolkit.validation import Validator, ValidationError
 
+
+class NumberValidator(Validator):
+
+    def validate(self, document):
+        try:
+            int(document.text)
+        except ValueError:
+            raise ValidationError(message="Please enter a number", cursor_position=len(document.text))
 
 style = style_from_dict({
     Token.Separator: '#cc5454',
@@ -15,45 +24,67 @@ style = style_from_dict({
 })
 
 
+resource = {
+    'env': [
+        'alpha',
+        'prod'
+    ],
+    'region': [
+        'Seoul',
+        'Tokyo',
+        'Japan',
+        'UK'
+    ],
+    'mode': [
+        'cluster',
+        'single'
+    ]
+}
+
+def get_choies(subject):
+    result = []
+    for choices in resource.get(subject):
+        result.append({'name': choices})
+    return result
+
 questions = [
     {
         'type': 'checkbox',
         'message': 'Select option',
-        'name': 'redis-resource',
-        'choices': [
-            Separator('= env ='),
-            {
-                'name': 'alpha'
-            },
-            {
-                'name': 'prod'
-            },
-            Separator('= region ='),
-            {
-                'name': 'Seoul'
-                # 'checked': True
-            },
-            {
-                'name': 'Tokyo'
-            },
-            {
-                'name': 'Japan'
-            },
-            {
-                'name': 'UK'
-            },
-            Separator('= cluster mode ='),
-            {
-                'name': 'redis cluster'
-            },
-            {
-                'name': 'redis single'
-            }
-        ],
+        'name': 'redis-resource-env',
+        'choices': get_choies('env'),
         'validate': lambda answer: 'You must choose at least one option.' 
             if len(answer) == 0 else True
-    }
+    },
+    {
+        'type': 'checkbox',
+        'message': 'Select option',
+        'name': 'redis-resource-region',
+        'choices': get_choies('region'),
+        'validate': lambda answer: 'You must choose at least one option.' 
+            if len(answer) == 0 else True
+    },
+    {
+        'type': 'checkbox',
+        'message': 'Select option',
+        'name': 'redis-resource-cluster',
+        'choices': get_choies('mode'),
+        'validate': lambda answer: 'You must choose at least one option.' 
+            if len(answer) == 0 else True
+    },
 ]
 
 answers = prompt(questions, style=style)
 pprint(answers)
+
+answer_env = answers.get('redis-resource-env', None)
+answer_region = answers.get('redis-resource-region')
+answer_cluster = answers.get('redis-resource-cluster')
+print("env",  answer_env)
+print("region", answer_region)
+print("cluster", answer_cluster)
+
+if len(answer_cluster) > 1:
+    print("multiple task")
+else:
+    print("single task:", answer_cluster)

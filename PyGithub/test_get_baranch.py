@@ -1,9 +1,9 @@
 from github import Github
-import git_pull_request as gpr
 import os
-from dotenv import load_dotenv
-load_dotenv()
 
+from dotenv import load_dotenv
+
+load_dotenv()
 access_token = os.environ.get("access_token")
 
 g = Github(access_token)

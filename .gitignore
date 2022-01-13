@@ -130,7 +130,4 @@ dmypy.json
 
 *.tf
 
-Github("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")
-curl -H "Authorization: token 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 https://api.github.com/gists
-
 *.env
